@@ -6,10 +6,9 @@ import readline from "node:readline";
 export class UiCli {
 	constructor(database) {
 		this.database = database;
-		this.alive = true;
 	}
 
-	_createInterface() {
+	_createInterface() { //initialise instance
 		const rl = readline.createInterface({
 			input: process.stdin,
 			output: process.stdout,
