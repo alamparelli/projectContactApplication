@@ -1,0 +1,29 @@
+# Ignore les fichiers de configuration environnementale
+.env
+
+# Ignore les fichiers système de macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Dossiers de cache Spotlight
+.Spotlight-V100
+
+# Fichiers de stockage temporaires
+.TemporaryItems
+.Trashes
+
+# Fichiers de métadonnées
+.VolumeIcon.icns
+.Icon?
+._*
+
+# Dossiers de mise à jour réseau
+.fseventsd
+
+# Fichiers de cache des attributs étendus
+.com.apple.timemachine.donotpresent
+.com.apple.metadata*
