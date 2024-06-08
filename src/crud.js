@@ -1,6 +1,6 @@
-const dbConnection = require("./connectDb");
+import { DbConnection } from "./connectDb.js";
 
-class Contact {
+export class Contact {
 	constructor(firstName, lastName, company, role, phone, email, address) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -23,12 +23,9 @@ class Contact {
 	updateLastName() {}
 	updateCompany() {}
 	updateRole() {}
-	updateCompany() {}
 	updatePhone() {}
 	updateEmail() {
 		this.email = nouvelEmail;
 	}
 	updateAddress() {}
 }
-
-module.exports = Contact;

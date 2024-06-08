@@ -16,8 +16,9 @@ Learning Project - Contact Carnet
 - Phone
 - Email
 - Address
+- Email
 
-### Shoudl be used
+### Should be used
 - Node:FS
 - JSON local
   - JSON CRUD ops

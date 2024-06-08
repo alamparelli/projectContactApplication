@@ -1,4 +1,4 @@
-class dbConnection {
+export class DbConnection {
 	constructor(db, contactCard) {
 		this.db = db;
 		this.contactCard = contactCard; //JsonObject to Manipulate
@@ -9,5 +9,3 @@ class dbConnection {
 	updateContact() {} //Add a new Contact in the db
 	deleteContact() {} //Delete a contact
 }
-
-module.exports = dbConnection;
