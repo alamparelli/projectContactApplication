@@ -1,6 +1,17 @@
-import 'dotenv/config';
-import { uiCli } from "./src/input.js";
+import "dotenv/config";
+import { UiCli } from "./src/input.js";
+import { existsSync, writeFile } from "fs";
 
 const localDb = process.env.LOCAL_JSONFILE;
 
-console.log(localDb)
+if (!existsSync(process.env.LOCAL_JSONFILE)) {
+	writeFile(process.env.LOCAL_JSONFILE, "", "utf-8", (res, err) => {
+		if (err) {
+			console.error(`env variable LOCAL_JSONFILE do not exist!`);
+		}
+	});
+	console.error("db did not existed, file created");
+}
+
+const app = new UiCli(localDb);
+app.userInput();
