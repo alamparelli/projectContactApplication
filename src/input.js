@@ -1,8 +1,5 @@
 // Create the Input Interface in Command line
-const crud = require("./crud");
+import { Contact } from "./crud.js";
 
-function uiCli(){
-
+export function uiCli(){
 }
-
-module.exports = uiCli;

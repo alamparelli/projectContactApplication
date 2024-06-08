@@ -1,10 +1,6 @@
-const dotenv = require("dotenv").config();
+import 'dotenv/config';
+import { uiCli } from "./src/input.js";
 
-const localDB = process.env.LOCAL_JSONFILE
+const localDb = process.env.LOCAL_JSONFILE;
 
-const uiCli = require('./src/input');
-
-
-console.log(localDB)
-
-
+console.log(localDb)
