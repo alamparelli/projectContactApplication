@@ -13,7 +13,8 @@ Learning Project - Contact Carnet
 - LastName
 - Company
 - Role
-- Telephone
+- Phone
+- Email
 - Address
 
 ### Shoudl be used
