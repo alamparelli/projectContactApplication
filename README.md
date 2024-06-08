@@ -14,7 +14,6 @@ Learning Project - Contact Carnet
 - Company
 - Role
 - Phone
-- Email
 - Address
 - Email
 
