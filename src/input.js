@@ -19,7 +19,7 @@ export class UiCli {
 	}
 
 	_updateFields(){
-		const firstName = this.rl.question(`FirstName: `,(answer) => { return answer})
+		const firstName = this.rl.question(`FirstName: `,(answer) => {return answer})
 		const lastName = this.rl.question(`LastName: `, (answer) => {return answer})
 		this.rl.close()
 		return {"firstName" : firstName, "lastName" : lastName}
