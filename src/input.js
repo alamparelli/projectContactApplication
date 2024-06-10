@@ -18,8 +18,15 @@ export class UiCli {
 		return rl;
 	}
 
+	_updateFields(){
+		const firstName = this.rl.question(`FirstName: `,(answer) => { return answer})
+		const lastName = this.rl.question(`LastName: `, (answer) => {return answer})
+		this.rl.close()
+		return {"firstName" : firstName, "lastName" : lastName}
+	}
+
 	_updateContact(answer) {
-		return answer;
+		return this._updateFields();
 	}
 
 	_deleteContact(answer) {
