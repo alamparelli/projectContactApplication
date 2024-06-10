@@ -6,6 +6,7 @@ import readline from "node:readline";
 export class UiCli {
 	constructor(database) {
 		this.database = database;
+		this.rl = this._createInterface();
 	}
 
 	_createInterface() {
@@ -26,15 +27,14 @@ export class UiCli {
 	}
 
 	_listContact(answer, type = null) {
-		if(type = "all"){
+		if (type == "all") {
 			return "answerall";
 		}
-		return answer
+		return answer;
 	}
 
 	userInput() {
-		let rl = this._createInterface();
-		rl.question(
+		this.rl.question(
 			`-------------\nWhat Would you like to do?\n- Create (C)\n- Update (U)\n- Delete (D)\n- List (L)\n- List all (A)\n>> `,
 			(answer) => {
 				answer = answer.toUpperCase();
@@ -58,7 +58,7 @@ export class UiCli {
 						console.log(`${answer} not valid! Nothing done`);
 						break;
 				}
-				rl.close();
+				this.rl.close();
 			}
 		);
 	}
