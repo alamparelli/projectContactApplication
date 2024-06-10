@@ -17,11 +17,20 @@ export class UiCli {
 		return rl;
 	}
 
-	_updateContact(answer) {}
+	_updateContact(answer) {
+		return answer;
+	}
 
-	_deleteContact(answer) {}
+	_deleteContact(answer) {
+		return answer;
+	}
 
-	_listContact(answer) {}
+	_listContact(answer, type = null) {
+		if(type = "all"){
+			return "answerall";
+		}
+		return answer
+	}
 
 	userInput() {
 		let rl = this._createInterface();
@@ -31,22 +40,22 @@ export class UiCli {
 				answer = answer.toUpperCase();
 				switch (answer) {
 					case "C":
-						console.log(`${answer} is the right one`);
+						console.log(this._updateContact(answer));
 						break;
 					case "U":
-						console.log(`${answer} is the right one`);
+						console.log(this._updateContact(answer));
 						break;
 					case "D":
-						console.log(`${answer} is the right one`);
+						console.log(this._deleteContact(answer));
 						break;
 					case "L":
-						console.log(`${answer} is the right one`);
+						console.log(this._listContact(answer));
 						break;
 					case "A":
-						console.log(`${answer} is the right one`);
+						console.log(this._listContact(answer, "all"));
 						break;
 					default:
-						console.log(`${answer} is not a valid one`);
+						console.log(`${answer} not valid! Nothing done`);
 						break;
 				}
 				rl.close();
