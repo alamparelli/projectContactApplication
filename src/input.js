@@ -2,6 +2,7 @@
 import { existsSync } from "fs";
 import { Contact } from "./crud.js";
 import readline from "node:readline";
+import { error } from "console";
 
 export class UiCli {
 	constructor(database) {
@@ -24,37 +25,73 @@ export class UiCli {
 	}
 
 	_askData(question) {
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			this.rl.question(question, (answer) => {
 				resolve(answer);
 			});
 		});
 	}
 
-	async _getDatas() {
-		this.firstName = await this._askData(`FirstName (${this.firstName}): `);
+	async _aquireDatas() {
+		this.firstName = await this._askData(`FirstName (${this.firstName}):`);
 		this.lastName = await this._askData(`LasName: (${this.lastName})`);
 		this.company = await this._askData(`company: (${this.company})`);
 		this.role = await this._askData(`role: (${this.role})`);
 		this.phone = await this._askData(`phone: (${this.phone})`);
 		this.email = await this._askData(`email: (${this.email})`);
 		this.address = await this._askData(`address: (${this.address})`);
-		this.userInput()
+		console.clear();
+		this.userInput();
 	}
 
-	_updateContact(answer) {
-		this._getDatas();
+	_retrieveData(data) {
+		//from localdb
+		//search data in db and assign it to class variables
+		console.clear();
+		console.log("_retrieveData");
+		this.userInput();
 	}
 
-	_deleteContact(answer) {
-		return answer;
+	_retrieveAllDatas() {
+		//from localdb
+		//search data in db and list all ID - firsName - LastName
+		console.clear();
+		console.log("_retrieveAllDatas");
+		this.userInput();
 	}
 
-	_listContact(answer, type = null) {
-		if (type == "all") {
-			return "answerall";
+	async _updateContact(answer) {
+		if (answer == "C") {
+			await this._aquireDatas();
 		}
-		return answer;
+		if (answer == "U") {
+			const user = await this._askData(
+				"Which user you want to update (Id, FirstName or LastName)? "
+			);
+			console.clear();
+			console.log(user);
+			//this._retrieveData();
+			this.userInput();
+		}
+	}
+
+	async _deleteContact() {
+		const user = await this._askData(
+			"Which user you want to delete (Id, FirstName or LastName)? "
+		);
+		console.clear();
+		console.log(user);
+		//this._retrieveData();
+		this.userInput();
+	}
+
+	_listContact(answer) {
+		if (answer == "A") {
+			this._retrieveAllDatas();
+		}
+		if (answer == "L") {
+			this._retrieveData();
+		}
 	}
 
 	userInput() {
@@ -70,16 +107,18 @@ export class UiCli {
 						console.log(this._updateContact(answer));
 						break;
 					case "D":
-						console.log(this._deleteContact(answer));
+						console.log(this._deleteContact());
 						break;
 					case "L":
 						console.log(this._listContact(answer));
 						break;
 					case "A":
-						console.log(this._listContact(answer, "all"));
+						console.log(this._listContact(answer));
 						break;
 					default:
+						console.clear();
 						console.log(`${answer} not valid! Nothing done`);
+						this.userInput();
 						break;
 				}
 			}
