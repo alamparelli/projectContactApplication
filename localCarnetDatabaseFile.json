@@ -1,0 +1,22 @@
+[
+    {
+        "id" : "1",
+        "firstName" : "Alessandro",
+        "lastName" : "Lamparelli",
+        "company" : "Obsidian It Consulting SRL",
+        "role" : "CEO",
+        "phone" : "032471659880",
+        "email" : "alessandro@lamparelli.eu",
+        "address" : "Boulevard lambermont 225"
+    },
+    {
+        "id" : "2",
+        "firstName" : "Jhon",
+        "lastName" : "Smith",
+        "company" : "OIC",
+        "role" : "CEO",
+        "phone" : "032471659880",
+        "email" : "alessandro@lamparelli.eu",
+        "address" : "Abenue milcamps 111"
+    }
+]
