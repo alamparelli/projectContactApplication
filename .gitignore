@@ -27,3 +27,5 @@
 # Fichiers de cache des attributs étendus
 .com.apple.timemachine.donotpresent
 .com.apple.metadata*
+
+nodes_modules
