@@ -16,4 +16,5 @@ if (!existsSync(process.env.LOCAL_JSONFILE)) {
 }
 
 const app = new UiCli(localDb);
+console.clear();
 app.userInput();
