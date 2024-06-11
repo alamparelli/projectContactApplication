@@ -11,13 +11,17 @@ export class UiCli {
 			input: process.stdin,
 			output: process.stdout,
 		});
-		this.firstName = "";
-		this.lastName = "";
-		this.company = "";
-		this.role = "";
-		this.phone = "";
-		this.email = "";
-		this.address = "";
+		this.contact = {
+			id : "",
+			firstName : "",
+			lastName : "",
+			company : "",
+			role : "",
+			phone : "",
+			email : "",
+			address : ""
+		}
+
 	}
 
 	_closeReadline() {
@@ -26,6 +30,7 @@ export class UiCli {
 
 	_askData(question) {
 		return new Promise((resolve, reject) => {
+			console.clear();
 			this.rl.question(question, (answer) => {
 				resolve(answer);
 			});
@@ -33,14 +38,14 @@ export class UiCli {
 	}
 
 	async _aquireDatas() {
-		this.firstName = await this._askData(`FirstName (${this.firstName}):`);
-		this.lastName = await this._askData(`LasName: (${this.lastName})`);
-		this.company = await this._askData(`company: (${this.company})`);
-		this.role = await this._askData(`role: (${this.role})`);
-		this.phone = await this._askData(`phone: (${this.phone})`);
-		this.email = await this._askData(`email: (${this.email})`);
-		this.address = await this._askData(`address: (${this.address})`);
-		console.clear();
+		this.contact.firstName = await this._askData(`FirstName (${this.contact.firstName}):`);
+		this.contact.lastName = await this._askData(`LasName: (${this.contact.lastName})`);
+		this.contact.company = await this._askData(`company: (${this.contact.company})`);
+		this.contact.role = await this._askData(`role: (${this.contact.role})`);
+		this.contact.phone = await this._askData(`phone: (${this.contact.phone})`);
+		this.contact.email = await this._askData(`email: (${this.contact.email})`);
+		this.contact.address = await this._askData(`address: (${this.contact.address})`);
+		console.log(this.contact)
 		this.userInput();
 	}
 
@@ -95,33 +100,37 @@ export class UiCli {
 	}
 
 	userInput() {
-		this.rl.question(
-			`-------------\nWhat Would you like to do?\n- Create (C)\n- Update (U)\n- Delete (D)\n- List (L)\n- List all (A)\n>> `,
-			(answer) => {
-				answer = answer.toUpperCase();
-				switch (answer) {
-					case "C":
-						console.log(this._updateContact(answer));
-						break;
-					case "U":
-						console.log(this._updateContact(answer));
-						break;
-					case "D":
-						console.log(this._deleteContact());
-						break;
-					case "L":
-						console.log(this._listContact(answer));
-						break;
-					case "A":
-						console.log(this._listContact(answer));
-						break;
-					default:
-						console.clear();
-						console.log(`${answer} not valid! Nothing done`);
-						this.userInput();
-						break;
-				}
+		console.log("--------------------------");
+		console.log("What Would you like to do?");
+		console.log("- (C)reate");
+		console.log("- (U)pdate");
+		console.log("- (D)elete");
+		console.log("- (L)ist");
+		console.log("- List all (A)");
+		this.rl.question(`>>`, (answer) => {
+			answer = answer.toUpperCase();
+			switch (answer) {
+				case "C":
+					console.log(this._updateContact(answer));
+					break;
+				case "U":
+					console.log(this._updateContact(answer));
+					break;
+				case "D":
+					console.log(this._deleteContact());
+					break;
+				case "L":
+					console.log(this._listContact(answer));
+					break;
+				case "A":
+					console.log(this._listContact(answer));
+					break;
+				default:
+					console.clear();
+					console.log(`${answer} not valid! Nothing done`);
+					this.userInput();
+					break;
 			}
-		);
+		});
 	}
 }
