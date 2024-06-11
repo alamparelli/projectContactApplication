@@ -6,27 +6,44 @@ import readline from "node:readline";
 export class UiCli {
 	constructor(database) {
 		this.database = database;
-		this.rl = this._createInterface();
-	}
-
-	_createInterface() {
-		//initialise instance
-		const rl = readline.createInterface({
+		this.rl = readline.createInterface({
 			input: process.stdin,
 			output: process.stdout,
 		});
-		return rl;
+		this.firstName = "";
+		this.lastName = "";
+		this.company = "";
+		this.role = "";
+		this.phone = "";
+		this.email = "";
+		this.address = "";
 	}
 
-	_updateFields(){
-		const firstName = this.rl.question(`FirstName: `,(answer) => {return answer})
-		const lastName = this.rl.question(`LastName: `, (answer) => {return answer})
-		this.rl.close()
-		return {"firstName" : firstName, "lastName" : lastName}
+	_closeReadline() {
+		this.rl.close();
+	}
+
+	_askData(question) {
+		return new Promise((resolve) => {
+			this.rl.question(question, (answer) => {
+				resolve(answer);
+			});
+		});
+	}
+
+	async _getDatas() {
+		this.firstName = await this._askData(`FirstName (${this.firstName}): `);
+		this.lastName = await this._askData(`LasName: (${this.lastName})`);
+		this.company = await this._askData(`company: (${this.company})`);
+		this.role = await this._askData(`role: (${this.role})`);
+		this.phone = await this._askData(`phone: (${this.phone})`);
+		this.email = await this._askData(`email: (${this.email})`);
+		this.address = await this._askData(`address: (${this.address})`);
+		this.userInput()
 	}
 
 	_updateContact(answer) {
-		return this._updateFields();
+		this._getDatas();
 	}
 
 	_deleteContact(answer) {
@@ -65,7 +82,6 @@ export class UiCli {
 						console.log(`${answer} not valid! Nothing done`);
 						break;
 				}
-				this.rl.close();
 			}
 		);
 	}
