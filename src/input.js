@@ -130,6 +130,7 @@ export class UiCli {
 		console.log("- (D)elete");
 		console.log("- (L)ist");
 		console.log("- List all (A)");
+		console.log("- Quit (Q)");
 		this.rl.question(`>>`, (answer) => {
 			answer = answer.toUpperCase();
 			switch (answer) {
@@ -147,6 +148,10 @@ export class UiCli {
 					break;
 				case "A":
 					console.log(this._listContact(answer));
+					break;
+				case "Q":
+					console.log("Bye...");
+					this._closeReadline()
 					break;
 				default:
 					console.clear();
