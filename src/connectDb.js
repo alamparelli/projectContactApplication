@@ -22,10 +22,16 @@ function getDbContent() {
 
 function setDbContent() {}
 
-export function getContact(contact) {
-	return getDbContent().then((value) => {
-		return JSON.parse(value);
-	});
+export async function getContact(data) {
+	const value = await getDbContent();
+	const obj = JSON.parse(value);
+	if (obj.find(record => record.id === data)){
+		return obj.find(record => record.id === data)
+	};
+	if (obj.find(record => record.lastName === data)){
+		return obj.find(record => record.lastName === data)
+		//to be converted in Regex
+	};
 }
 
 export function getAllContacts() {

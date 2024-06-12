@@ -71,9 +71,9 @@ export class UiCli {
 		//from localdb
 		//search data in db and assign it to class variables
 		console.clear();
-		let searchId = await this._askData(`which Id?: `);
-		crudOps.getContact().then(value => {
-			console.log(value[searchId])
+		let searchId = await this._askData(`What is the Contact to show (Id or LastName): `);
+		crudOps.getContact(searchId).then(value => {
+			console.log(value)
 		});
 		this._loopMenu();
 	}

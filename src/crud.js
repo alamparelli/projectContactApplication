@@ -1,8 +1,8 @@
 import * as dbConnect from "./connectDb.js";
 
 // Méthode pour afficher les informations de l'utilisateur
-export function getContact() {
-	return dbConnect.getContact() 
+export function getContact(data) {
+	return dbConnect.getContact(data) 
 }
 export function getAllContacts() {
 	return dbConnect.getAllContacts();
