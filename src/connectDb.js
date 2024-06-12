@@ -1,8 +1,7 @@
 import { existsSync, writeFile } from "fs";
 import { readFile } from "fs/promises";
-import { connect } from "http2";
 
-const DB = process.env.LOCAL_JSONFILE
+const DB = process.env.LOCAL_JSONFILE;
 
 export function dbExist(db) {
 	if (!existsSync(DB)) {
@@ -17,18 +16,20 @@ export function dbExist(db) {
 	}
 }
 
-function dbGetContent(){
-	const connection = new Promise((resolve, reject) => {
-		let content = readFile(DB, { encoding: 'utf8' })
-		resolve(content)
-		});
-		
-	return connection;
+function getDbContent() {
+	return readFile(DB, { encoding: "utf8" });
 }
 
-export function getContact() {}
+function setDbContent() {}
+
+export function getContact(contact) {
+	return getDbContent().then((value) => {
+		return JSON.parse(value);
+	});
+}
+
 export function getAllContacts() {
-	return dbGetContent();
+	return getDbContent();
 }
 export function updateContact() {} //Add a new Contact in the db or update it
-export function deleteContact() {} 
+export function deleteContact() {}

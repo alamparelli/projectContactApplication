@@ -67,20 +67,21 @@ export class UiCli {
 		this._loopMenu();
 	}
 
-	_retrieveData(data) {
+	async _retrieveData() {
 		//from localdb
 		//search data in db and assign it to class variables
 		console.clear();
-		console.log("_retrieveData");
+		let searchId = await this._askData(`which Id?: `);
+		crudOps.getContact().then(value => {
+			console.log(value[searchId])
+		});
 		this._loopMenu();
 	}
 
-	async _retrieveAllDatas() {
+	_retrieveAllDatas() {
 		//from localdb
 		//search data in db and list all ID - firsName - LastName
-
-		const content = crudOps.getAllContacts();
-		content.then((value) => console.log(value));
+		crudOps.getAllContacts().then((value) => console.log(value));
 		this._loopMenu();
 	}
 
