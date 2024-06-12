@@ -75,6 +75,7 @@ export class UiCli {
 		let searchId = await this._askData(
 			`What is the Contact to show (Id or LastName): `
 		);
+		console.clear()
 		crudOps.getContact(searchId).then((value) => {
 			console.log(value);
 		});
@@ -84,6 +85,7 @@ export class UiCli {
 	_retrieveAllDatas() {
 		//from localdb
 		//search data in db and list all ID - firsName - LastName
+		console.clear()
 		crudOps.getAllContacts().then((value) => console.log(value));
 		this._loopMenu();
 	}
