@@ -20,29 +20,46 @@ function getDbContent() {
 	return readFile(DB, { encoding: "utf8" });
 }
 
-function setDbContent() {}
+function setDbContent(data) {
+	writeFile(DB, data, (error) => {
+		if (error) {
+			console.error(error);
+			throw error;
+		}
+	});
+}
 
 export async function getContact(data) {
-	const value = await getDbContent();
-	const obj = JSON.parse(value);
+	const obj = JSON.parse(await getDbContent());
 	if (obj.find((record) => record.id === data)) {
-		data =  obj.find((record) => record.id === data);
+		data = obj.find((record) => record.id === data);
 	}
 	if (obj.find((record) => record.lastName === data)) {
-		data =  obj.find((record) => record.lastName === data);
+		data = obj.find((record) => record.lastName === data);
 		//to be converted in Regex
 	}
-	return `--------------\n(${data.id}) ${data.firstName} ${data.lastName}\nCompany : ${data.company}\nRole : ${data.role}\nPhone : ${data.phone}\nemail : ${data.email}\nAddress : ${data.address}`
+	return `--------------\n(${data.id}) ${data.firstName} ${data.lastName}\nCompany : ${data.company}\nRole : ${data.role}\nPhone : ${data.phone}\nemail : ${data.email}\nAddress : ${data.address}`;
 }
 
 export async function getAllContacts() {
-	const value = await getDbContent();
-	const obj = JSON.parse(value);
-	let list = "--------------\n";
-	for (let index = 0; index < obj.length; index++) {
-		list += `${obj[index].id} - ${obj[index].firstName} ${obj[index].lastName}\n`;
-	}
-	return list
+	const obj = JSON.parse(await getDbContent());
+	// let list = "--------------\n";
+	// for (let index = 0; index < obj.length; index++) {
+	// 	list += `${obj[index].id} - ${obj[index].firstName} ${obj[index].lastName}\n`;
+	// }
+	// return list
+	return obj;
 }
-export function updateContact() {} //Add a new Contact in the db or update it
+export async function updateContact(data, action) {
+	if(action == "C"){
+		const obj = JSON.parse(await getDbContent());
+		const dbLength = Object.keys(obj).length;
+		data.id = String(dbLength + 1);
+		obj[dbLength] = data;
+		setDbContent(JSON.stringify(obj));
+	}
+	if (action == "U"){
+		
+	}
+} //Add a new Contact in the db or update it
 export function deleteContact() {}

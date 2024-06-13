@@ -8,7 +8,14 @@ export function getAllContacts() {
 	return dbConnect.getAllContacts();
 }
 
-export function addContact() {} //Add a new Contact in the db
+export function addContact(data) { 
+	return dbConnect.updateContact(data, "C");
+} 
+
+export function updateContact(data) { 
+	return dbConnect.updateContact(data, "U");
+}
+
 export function deleteContact() {} //Delete a contact
 
 

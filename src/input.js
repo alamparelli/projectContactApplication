@@ -63,7 +63,6 @@ export class UiCli {
 		this.contact.address = await this._askData(
 			`address: (${this.contact.address})`
 		);
-		console.log(this.contact);
 		this._loopMenu();
 	}
 
@@ -93,6 +92,8 @@ export class UiCli {
 	async _updateContact(answer) {
 		if (answer == "C") {
 			await this._aquireDatas();
+			crudOps.addContact(this.contact)
+			console.log(this.contact);
 		}
 		if (answer == "U") {
 			const user = await this._askData(
