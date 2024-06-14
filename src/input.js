@@ -27,6 +27,10 @@ export class UiCli {
 		this.rl.close();
 	}
 
+	_timeOut() {
+		setTimeout(() => {}, 250);
+	}
+
 	_loopMenu() {
 		setTimeout(() => {
 			this.userInput();
@@ -44,6 +48,7 @@ export class UiCli {
 	}
 
 	async _aquireDatas() {
+		//need to take in count if only enter is pressed so if value == "" nothiong to do | needed for update
 		this.contact.firstName = await this._askData(
 			`FirstName (${this.contact.firstName}): `
 		);
@@ -53,7 +58,9 @@ export class UiCli {
 		this.contact.company = await this._askData(
 			`company (${this.contact.company}): `
 		);
-		this.contact.role = await this._askData(`role (${this.contact.role}): `);
+		this.contact.role = await this._askData(
+			`role (${this.contact.role}): `
+		);
 		this.contact.phone = await this._askData(
 			`phone (${this.contact.phone}): `
 		);
@@ -66,24 +73,35 @@ export class UiCli {
 		this._loopMenu();
 	}
 
+	_syncDatas(data) {
+		this.contact.id = data.id;
+		this.contact.firstName = data.firstName;
+		this.contact.lastName = data.lastName;
+		this.contact.company = data.company;
+		this.contact.role = data.role;
+		this.contact.phone = data.phone;
+		this.contact.email = data.email;
+		this.contact.address = data.address;
+	}
+
 	async _updateContact(answer) {
 		if (answer == "C") {
+			this.contact = {};
 			await this._aquireDatas();
-			crudOps.addContact(this.contact)
+			await crudOps.addContact(this.contact);
 			console.log(this.contact);
 		}
 		if (answer == "U") {
-			console.clear();
 			crudOps.getAllContacts().then((value) => console.log(value));
-			const user = await this._askData(
+			this._timeOut();
+			const searchId = await this._askData(
 				"Which user you want to Update (Id, FirstName)? "
 			);
-
-			//crudOps.updateContact(user);
-			//aller chercher les info du contact
-			//demander ce que l'on veut modifier
-			//envoyer les nouvelles données à la db pou sauvegarde
-			this._loopMenu();
+			await crudOps.getContact(searchId).then((value) => {
+				this._syncDatas(value);
+			});
+			await this._aquireDatas();
+			await crudOps.updateContact(this.contact)
 		}
 	}
 
@@ -109,11 +127,13 @@ export class UiCli {
 			let searchId = await this._askData(
 				`Please Select the Contact (Id or LastName): `
 			);
-			console.clear()
-			crudOps.getContact(searchId).then((value) => {
-				console.log(value);
+			console.clear();
+			await crudOps.getContact(searchId).then((value) => {
+				console.log(
+					`--------------\n(${value.id}) ${value.firstName} ${value.lastName}\nCompany : ${value.company}\nRole : ${value.role}\nPhone : ${value.phone}\nemail : ${value.email}\nAddress : ${value.address}`
+				);
 			});
-			this._loopMenu()
+			this._loopMenu();
 		}
 	}
 
@@ -146,7 +166,7 @@ export class UiCli {
 					break;
 				case "Q":
 					console.log("Bye...");
-					this._closeReadline()
+					this._closeReadline();
 					break;
 				default:
 					console.clear();
