@@ -66,29 +66,6 @@ export class UiCli {
 		this._loopMenu();
 	}
 
-
-	async _retrieveData() {
-		//from localdb
-		//search data in db and assign it to class variables
-		console.clear();
-		this._retrieveAllDatas();
-		let searchId = await this._askData(
-			`Please Select the Contact (Id or LastName): `
-		);
-		console.clear()
-		crudOps.getContact(searchId).then((value) => {
-			console.log(value);
-		});
-		this._loopMenu()
-	}
-
-	_retrieveAllDatas() {
-		//from localdb
-		//search data in db and list all ID - firsName - LastName
-		console.clear()
-		crudOps.getAllContacts().then((value) => console.log(value));
-	}
-
 	async _updateContact(answer) {
 		if (answer == "C") {
 			await this._aquireDatas();
@@ -97,11 +74,11 @@ export class UiCli {
 		}
 		if (answer == "U") {
 			console.clear();
-			this._retrieveAllDatas();
+			crudOps.getAllContacts().then((value) => console.log(value));
 			const user = await this._askData(
 				"Which user you want to Update (Id, FirstName)? "
 			);
-			
+
 			//crudOps.updateContact(user);
 			//aller chercher les info du contact
 			//demander ce que l'on veut modifier
@@ -120,14 +97,23 @@ export class UiCli {
 		this._loopMenu();
 	}
 
-	_listContact(answer) {
+	async _listContact(answer) {
 		if (answer == "A") {
-			this._retrieveAllDatas();
+			console.clear();
+			crudOps.getAllContacts().then((value) => console.log(value));
 			this._loopMenu();
 		}
 		if (answer == "L") {
-			this._retrieveData();
-			this._loopMenu();
+			console.clear();
+			crudOps.getAllContacts().then((value) => console.log(value));
+			let searchId = await this._askData(
+				`Please Select the Contact (Id or LastName): `
+			);
+			console.clear()
+			crudOps.getContact(searchId).then((value) => {
+				console.log(value);
+			});
+			this._loopMenu()
 		}
 	}
 
