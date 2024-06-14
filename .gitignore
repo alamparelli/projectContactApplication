@@ -28,4 +28,7 @@
 .com.apple.timemachine.donotpresent
 .com.apple.metadata*
 
+#other files
 nodes_modules
+localCarnetDatabaseFile.json
+contactBD.json

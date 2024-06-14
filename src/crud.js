@@ -1,31 +1,37 @@
-import { DbConnection } from "./connectDb.js";
+import * as dbConnect from "./connectDb.js";
 
-export class Contact {
-	constructor(firstName, lastName, company, role, phone, email, address) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.company = company;
-		this.role = role;
-		this.phone = phone;
-		this.email = email;
-		this.address = address;
+// Méthode pour afficher les informations de l'utilisateur
+
+export async function getContact(data) {
+	const obj = JSON.parse(await dbConnect.getDbContent());
+	return obj[data];
+}
+
+export async function getAllContacts() {
+	const obj = JSON.parse(await dbConnect.getDbContent());
+	let list = "--------------\n";
+	for (var key in obj) {
+		list += `(${key}) ${obj[key].firstName} ${obj[key].lastName}\n`;
 	}
-
-	// Méthode pour afficher les informations de l'utilisateur
-	getContact() {}
-	getAllContacts() {}
-
-	addContact() {} //Add a new Contact in the db
-	deleteContact() {} //Delete a contact
-
-	//Update if exist, create if not exist
-	updateFirstName() {}
-	updateLastName() {}
-	updateCompany() {}
-	updateRole() {}
-	updatePhone() {}
-	updateEmail() {
-		this.email = nouvelEmail;
+	return list;
+}
+export async function updateContact(data, action, id = "") {
+	if (action == "C") {
+		const obj = JSON.parse(await dbConnect.getDbContent());
+		console.log(obj.id)
+		//const dbLength = Object.keys(obj).length;
+		id = dbLength + 1;
+		obj[id] = data;
+		dbConnect.setDbContent(JSON.stringify(obj));
 	}
-	updateAddress() {}
+	if (action == "U") {
+		const obj = JSON.parse(await dbConnect.getDbContent());
+		obj[id] = data;
+		dbConnect.setDbContent(JSON.stringify(obj));
+	}
+} //Add a new Contact in the db or update it
+export async function deleteContact(id) {
+	const obj = JSON.parse(await dbConnect.getDbContent());
+	delete obj[id];
+	dbConnect.setDbContent(JSON.stringify(obj));
 }
