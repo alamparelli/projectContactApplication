@@ -1,6 +1,6 @@
 // Create the Input Interface in Command line
 import { existsSync } from "fs";
-import { Contact } from "./crud.js";
+import * as crudOps from "./crud.js";
 import readline from "node:readline";
 import { error } from "console";
 
@@ -12,23 +12,33 @@ export class UiCli {
 			output: process.stdout,
 		});
 		this.contact = {
-			id : "",
-			firstName : "",
-			lastName : "",
-			company : "",
-			role : "",
-			phone : "",
-			email : "",
-			address : ""
-		}
-
+			id: "",
+			firstName: "",
+			lastName: "",
+			company: "",
+			role: "",
+			phone: "",
+			email: "",
+			address: "",
+		};
 	}
 
 	_closeReadline() {
 		this.rl.close();
 	}
 
+	_timeOut() {
+		setTimeout(() => {}, 250);
+	}
+
+	_loopMenu() {
+		setTimeout(() => {
+			this.userInput();
+		}, 250);
+	}
+
 	_askData(question) {
+		// constructor for questions
 		return new Promise((resolve, reject) => {
 			console.clear();
 			this.rl.question(question, (answer) => {
@@ -38,64 +48,93 @@ export class UiCli {
 	}
 
 	async _aquireDatas() {
-		this.contact.firstName = await this._askData(`FirstName (${this.contact.firstName}):`);
-		this.contact.lastName = await this._askData(`LasName: (${this.contact.lastName})`);
-		this.contact.company = await this._askData(`company: (${this.contact.company})`);
-		this.contact.role = await this._askData(`role: (${this.contact.role})`);
-		this.contact.phone = await this._askData(`phone: (${this.contact.phone})`);
-		this.contact.email = await this._askData(`email: (${this.contact.email})`);
-		this.contact.address = await this._askData(`address: (${this.contact.address})`);
-		console.log(this.contact)
-		this.userInput();
+		//need to take in count if only enter is pressed so if value == "" nothiong to do | needed for update
+		//add Validation
+		this.contact.firstName = await this._askData(
+			`FirstName (${this.contact.firstName}): `
+		);
+		this.contact.lastName = await this._askData(
+			`LasName (${this.contact.lastName}): `
+		);
+		this.contact.company = await this._askData(
+			`company (${this.contact.company}): `
+		);
+		this.contact.role = await this._askData(
+			`role (${this.contact.role}): `
+		);
+		this.contact.phone = await this._askData(
+			`phone (${this.contact.phone}): `
+		);
+		this.contact.email = await this._askData(
+			`email (${this.contact.email}): `
+		);
+		this.contact.address = await this._askData(
+			`address (${this.contact.address}): `
+		);
+		this._loopMenu();
 	}
 
-	_retrieveData(data) {
-		//from localdb
-		//search data in db and assign it to class variables
-		console.clear();
-		console.log("_retrieveData");
-		this.userInput();
-	}
-
-	_retrieveAllDatas() {
-		//from localdb
-		//search data in db and list all ID - firsName - LastName
-		console.clear();
-		console.log("_retrieveAllDatas");
-		this.userInput();
+	_syncDatas(data) {
+		this.contact.id = data.id;
+		this.contact.firstName = data.firstName;
+		this.contact.lastName = data.lastName;
+		this.contact.company = data.company;
+		this.contact.role = data.role;
+		this.contact.phone = data.phone;
+		this.contact.email = data.email;
+		this.contact.address = data.address;
 	}
 
 	async _updateContact(answer) {
 		if (answer == "C") {
+			this.contact = {};
 			await this._aquireDatas();
+			await crudOps.updateContact(this.contact, answer);
+			console.log(this.contact);
 		}
 		if (answer == "U") {
-			const user = await this._askData(
-				"Which user you want to update (Id, FirstName or LastName)? "
+			crudOps.getAllContacts().then((value) => console.log(value));
+			this._timeOut();
+			const searchId = await this._askData(
+				"Which user you want to Update (Id, FirstName)? "
 			);
-			console.clear();
-			console.log(user);
-			//this._retrieveData();
-			this.userInput();
+			await crudOps.getContact(searchId).then((value) => {
+				this._syncDatas(value);
+			});
+			await this._aquireDatas();
+			await crudOps.updateContact(this.contact, answer)
 		}
 	}
 
 	async _deleteContact() {
 		const user = await this._askData(
-			"Which user you want to delete (Id, FirstName or LastName)? "
+			"Which user you want to delete (Id, FirstName)? "
 		);
 		console.clear();
 		console.log(user);
 		//this._retrieveData();
-		this.userInput();
+		this._loopMenu();
 	}
 
-	_listContact(answer) {
+	async _listContact(answer) {
 		if (answer == "A") {
-			this._retrieveAllDatas();
+			console.clear();
+			crudOps.getAllContacts().then((value) => console.log(value));
+			this._loopMenu();
 		}
 		if (answer == "L") {
-			this._retrieveData();
+			console.clear();
+			crudOps.getAllContacts().then((value) => console.log(value));
+			let searchId = await this._askData(
+				`Please Select the Contact (Id or LastName): `
+			);
+			console.clear();
+			await crudOps.getContact(searchId).then((value) => {
+				console.log(
+					`--------------\n(${value.id}) ${value.firstName} ${value.lastName}\nCompany : ${value.company}\nRole : ${value.role}\nPhone : ${value.phone}\nemail : ${value.email}\nAddress : ${value.address}`
+				);
+			});
+			this._loopMenu();
 		}
 	}
 
@@ -107,6 +146,7 @@ export class UiCli {
 		console.log("- (D)elete");
 		console.log("- (L)ist");
 		console.log("- List all (A)");
+		console.log("- Quit (Q)");
 		this.rl.question(`>>`, (answer) => {
 			answer = answer.toUpperCase();
 			switch (answer) {
@@ -125,10 +165,14 @@ export class UiCli {
 				case "A":
 					console.log(this._listContact(answer));
 					break;
+				case "Q":
+					console.log("Bye...\n");
+					this._closeReadline();
+					break;
 				default:
 					console.clear();
-					console.log(`${answer} not valid! Nothing done`);
-					this.userInput();
+					console.log(`${answer} not valid answer! Nothing done`);
+					this._loopMenu();
 					break;
 			}
 		});
