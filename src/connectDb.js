@@ -29,6 +29,12 @@ function setDbContent(data) {
 	});
 }
 
+async function getContactIndex(data) {
+	const obj = JSON.parse(await getDbContent());
+	data = obj.find((record) => record.id === data);
+	return data;
+}
+
 export async function getContact(data) {
 	const obj = JSON.parse(await getDbContent());
 	if (obj.find((record) => record.id === data)) {
@@ -43,23 +49,23 @@ export async function getContact(data) {
 
 export async function getAllContacts() {
 	const obj = JSON.parse(await getDbContent());
-	// let list = "--------------\n";
-	// for (let index = 0; index < obj.length; index++) {
-	// 	list += `${obj[index].id} - ${obj[index].firstName} ${obj[index].lastName}\n`;
-	// }
-	// return list
-	return obj;
+	let list = "--------------\n";
+	for (let index = 0; index < obj.length; index++) {
+		list += `(${obj[index].id}) ${obj[index].firstName} ${obj[index].lastName}\n`;
+	}
+	return list
+	//return obj;
 }
 export async function updateContact(data, action) {
-	if(action == "C"){
+	if (action == "C") {
 		const obj = JSON.parse(await getDbContent());
 		const dbLength = Object.keys(obj).length;
 		data.id = String(dbLength + 1);
 		obj[dbLength] = data;
 		setDbContent(JSON.stringify(obj));
 	}
-	if (action == "U"){
-		
+	if (action == "U") {
+		return getContactIndex(data.id);
 	}
 } //Add a new Contact in the db or update it
 export function deleteContact() {}

@@ -45,26 +45,27 @@ export class UiCli {
 
 	async _aquireDatas() {
 		this.contact.firstName = await this._askData(
-			`FirstName (${this.contact.firstName}):`
+			`FirstName (${this.contact.firstName}): `
 		);
 		this.contact.lastName = await this._askData(
-			`LasName: (${this.contact.lastName})`
+			`LasName (${this.contact.lastName}): `
 		);
 		this.contact.company = await this._askData(
-			`company: (${this.contact.company})`
+			`company (${this.contact.company}): `
 		);
-		this.contact.role = await this._askData(`role: (${this.contact.role})`);
+		this.contact.role = await this._askData(`role (${this.contact.role}): `);
 		this.contact.phone = await this._askData(
-			`phone: (${this.contact.phone})`
+			`phone (${this.contact.phone}): `
 		);
 		this.contact.email = await this._askData(
-			`email: (${this.contact.email})`
+			`email (${this.contact.email}): `
 		);
 		this.contact.address = await this._askData(
-			`address: (${this.contact.address})`
+			`address (${this.contact.address}): `
 		);
 		this._loopMenu();
 	}
+
 
 	async _retrieveData() {
 		//from localdb
@@ -72,13 +73,13 @@ export class UiCli {
 		console.clear();
 		this._retrieveAllDatas();
 		let searchId = await this._askData(
-			`What is the Contact to show (Id or LastName): `
+			`Please Select the Contact (Id or LastName): `
 		);
 		console.clear()
 		crudOps.getContact(searchId).then((value) => {
 			console.log(value);
 		});
-		this._loopMenu();
+		this._loopMenu()
 	}
 
 	_retrieveAllDatas() {
@@ -86,7 +87,6 @@ export class UiCli {
 		//search data in db and list all ID - firsName - LastName
 		console.clear()
 		crudOps.getAllContacts().then((value) => console.log(value));
-		this._loopMenu();
 	}
 
 	async _updateContact(answer) {
@@ -96,19 +96,23 @@ export class UiCli {
 			console.log(this.contact);
 		}
 		if (answer == "U") {
-			const user = await this._askData(
-				"Which user you want to update (Id, FirstName or LastName)? "
-			);
 			console.clear();
-			console.log(user);
-			//this._retrieveData();
+			this._retrieveAllDatas();
+			const user = await this._askData(
+				"Which user you want to Update (Id, FirstName)? "
+			);
+			
+			//crudOps.updateContact(user);
+			//aller chercher les info du contact
+			//demander ce que l'on veut modifier
+			//envoyer les nouvelles données à la db pou sauvegarde
 			this._loopMenu();
 		}
 	}
 
 	async _deleteContact() {
 		const user = await this._askData(
-			"Which user you want to delete (Id, FirstName or LastName)? "
+			"Which user you want to delete (Id, FirstName)? "
 		);
 		console.clear();
 		console.log(user);
@@ -119,9 +123,11 @@ export class UiCli {
 	_listContact(answer) {
 		if (answer == "A") {
 			this._retrieveAllDatas();
+			this._loopMenu();
 		}
 		if (answer == "L") {
 			this._retrieveData();
+			this._loopMenu();
 		}
 	}
 
