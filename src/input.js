@@ -49,6 +49,7 @@ export class UiCli {
 
 	async _aquireDatas() {
 		//need to take in count if only enter is pressed so if value == "" nothiong to do | needed for update
+		//add Validation
 		this.contact.firstName = await this._askData(
 			`FirstName (${this.contact.firstName}): `
 		);
@@ -165,12 +166,12 @@ export class UiCli {
 					console.log(this._listContact(answer));
 					break;
 				case "Q":
-					console.log("Bye...");
+					console.log("Bye...\n");
 					this._closeReadline();
 					break;
 				default:
 					console.clear();
-					console.log(`${answer} not valid! Nothing done`);
+					console.log(`${answer} not valid answer! Nothing done`);
 					this._loopMenu();
 					break;
 			}
