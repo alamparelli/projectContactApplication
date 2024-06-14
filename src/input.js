@@ -94,7 +94,7 @@ export class UiCli {
 			crudOps.getAllContacts().then((value) => console.log(value));
 			this._timeOut();
 			const searchId = await this._askData(
-				"Which user you want to Update (Id, FirstName)? "
+				"Which user you want to Update (Id)? "
 			);
 			await crudOps.getContact(searchId).then((value) => {
 				this._syncDatas(value);
@@ -105,12 +105,12 @@ export class UiCli {
 	}
 
 	async _deleteContact() {
-		const user = await this._askData(
-			"Which user you want to delete (Id, FirstName)? "
+		crudOps.getAllContacts().then((value) => console.log(value));
+		this._timeOut();
+		const searchId = await this._askData(
+			"Which user you want to delete (Id)? "
 		);
-		console.clear();
-		console.log(user);
-		//this._retrieveData();
+		await crudOps.deleteContact(searchId);
 		this._loopMenu();
 	}
 

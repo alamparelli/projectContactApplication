@@ -29,4 +29,8 @@ export async function updateContact(data, action, id = "") {
 		dbConnect.setDbContent(JSON.stringify(obj));
 	}
 } //Add a new Contact in the db or update it
-export function deleteContact() {}
+export async function deleteContact(id) {
+	const obj = JSON.parse(await dbConnect.getDbContent());
+	delete obj[id];
+	dbConnect.setDbContent(JSON.stringify(obj));
+}
