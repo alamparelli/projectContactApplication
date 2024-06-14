@@ -27,16 +27,15 @@ export class UiCli {
 	}
 
 	_timeOut() {
-		setTimeout(() => {}, 250);
+		return new Promise(resolve => setTimeout(resolve, 250));
 	}
 
-	_loopMenu() {
-		setTimeout(() => {
-			this.userInput();
-		}, 250);
+	async _loopMenu() {
+		await this._timeOut();
+		this.userInput();
 	}
 
-	_askData(question) {
+	async _askData(question) {
 		// constructor for questions
 		return new Promise((resolve, reject) => {
 			this.rl.question(question, (answer) => {
@@ -122,9 +121,9 @@ export class UiCli {
 		}
 		if (answer == "L") {
 			console.clear();
-			crudOps.getAllContacts().then((value) => console.log(value));
+			await crudOps.getAllContacts().then((value) => console.log(value));
 			let searchId = await this._askData(
-				`Please Select the Contact (Id or LastName): `
+				`Please Select the Contact (Id): `
 			);
 			console.clear();
 			await crudOps.getContact(searchId).then((value) => {
@@ -136,7 +135,7 @@ export class UiCli {
 		}
 	}
 
-	userInput() {
+	async userInput() {
 		console.log("--------------------------");
 		console.log("What Would you like to do?");
 		console.log("- (C)reate");
@@ -145,23 +144,23 @@ export class UiCli {
 		console.log("- (L)ist");
 		console.log("- List all (A)");
 		console.log("- Quit (Q)");
-		this.rl.question(`>>`, (answer) => {
+		this.rl.question(`>>`, async (answer) => {
 			answer = answer.toUpperCase();
 			switch (answer) {
 				case "C":
-					console.log(this._updateContact(answer));
+					await this._updateContact(answer);
 					break;
 				case "U":
-					console.log(this._updateContact(answer));
+					await this._updateContact(answer);
 					break;
 				case "D":
-					console.log(this._deleteContact());
+					await this._deleteContact();
 					break;
 				case "L":
-					console.log(this._listContact(answer));
+					await this._listContact(answer);
 					break;
 				case "A":
-					console.log(this._listContact(answer));
+					await this._listContact(answer);
 					break;
 				case "Q":
 					console.log("Bye...\n");
