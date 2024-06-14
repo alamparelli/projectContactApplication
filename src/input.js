@@ -89,7 +89,7 @@ export class UiCli {
 		if (answer == "C") {
 			this.contact = {};
 			await this._aquireDatas();
-			await crudOps.addContact(this.contact);
+			await crudOps.updateContact(this.contact, answer);
 			console.log(this.contact);
 		}
 		if (answer == "U") {
@@ -102,7 +102,7 @@ export class UiCli {
 				this._syncDatas(value);
 			});
 			await this._aquireDatas();
-			await crudOps.updateContact(this.contact)
+			await crudOps.updateContact(this.contact, answer)
 		}
 	}
 
