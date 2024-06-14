@@ -10,8 +10,8 @@ export async function getContact(data) {
 export async function getAllContacts() {
 	const obj = JSON.parse(await dbConnect.getDbContent());
 	let list = "--------------\n";
-	for (let index = 1; index <= Object.keys(obj).length; index++) {
-		list += `(${index}) ${obj[index].firstName} ${obj[index].lastName}\n`;
+	for (var key in obj) {
+		list += `(${key}) ${obj[key].firstName} ${obj[key].lastName}\n`;
 	}
 	return list;
 }
