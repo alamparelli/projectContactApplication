@@ -12,7 +12,6 @@ export class UiCli {
 			output: process.stdout,
 		});
 		this.contact = {
-			id: "",
 			firstName: "",
 			lastName: "",
 			company: "",
@@ -40,7 +39,6 @@ export class UiCli {
 	_askData(question) {
 		// constructor for questions
 		return new Promise((resolve, reject) => {
-			console.clear();
 			this.rl.question(question, (answer) => {
 				resolve(answer);
 			});
@@ -48,7 +46,7 @@ export class UiCli {
 	}
 
 	async _aquireDatas() {
-		//need to take in count if only enter is pressed so if value == "" nothiong to do | needed for update
+		//need to take in count if only enter is pressed so if value == "" nothing to do | needed for update
 		//add Validation
 		this.contact.firstName = await this._askData(
 			`FirstName (${this.contact.firstName}): `
@@ -75,7 +73,7 @@ export class UiCli {
 	}
 
 	_syncDatas(data) {
-		this.contact.id = data.id;
+		//this.id = data.id;
 		this.contact.firstName = data.firstName;
 		this.contact.lastName = data.lastName;
 		this.contact.company = data.company;
@@ -90,7 +88,7 @@ export class UiCli {
 			this.contact = {};
 			await this._aquireDatas();
 			await crudOps.updateContact(this.contact, answer);
-			console.log(this.contact);
+			//console.log(this.contact);
 		}
 		if (answer == "U") {
 			crudOps.getAllContacts().then((value) => console.log(value));
@@ -102,7 +100,7 @@ export class UiCli {
 				this._syncDatas(value);
 			});
 			await this._aquireDatas();
-			await crudOps.updateContact(this.contact, answer)
+			await crudOps.updateContact(this.contact, answer);
 		}
 	}
 
@@ -131,7 +129,7 @@ export class UiCli {
 			console.clear();
 			await crudOps.getContact(searchId).then((value) => {
 				console.log(
-					`--------------\n(${value.id}) ${value.firstName} ${value.lastName}\nCompany : ${value.company}\nRole : ${value.role}\nPhone : ${value.phone}\nemail : ${value.email}\nAddress : ${value.address}`
+					`--------------\n(${searchId}) ${value.firstName} ${value.lastName}\nCompany : ${value.company}\nRole : ${value.role}\nPhone : ${value.phone}\nemail : ${value.email}\nAddress : ${value.address}`
 				);
 			});
 			this._loopMenu();
