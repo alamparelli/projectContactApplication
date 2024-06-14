@@ -4,31 +4,24 @@ import * as dbConnect from "./connectDb.js";
 
 export async function getContact(data) {
 	const obj = JSON.parse(await dbConnect.getDbContent());
-	if (obj.find((record) => record.id === data)) {
-		data = obj.find((record) => record.id === data);
-	}
-	if (obj.find((record) => record.lastName === data)) {
-		data = obj.find((record) => record.lastName === data);
-		//to be converted in Regex
-	}
-	return data;
+	return obj[data];
 }
 
 export async function getAllContacts() {
 	const obj = JSON.parse(await dbConnect.getDbContent());
 	let list = "--------------\n";
-	for (let index = 0; index < obj.length; index++) {
-		list += `(${obj[index].id}) ${obj[index].firstName} ${obj[index].lastName}\n`;
+	for (let index = 1; index <= Object.keys(obj).length; index++) {
+		list += `(${index}) ${obj[index].firstName} ${obj[index].lastName}\n`;
 	}
 	return list;
-	//return obj;
 }
 export async function updateContact(data, action) {
 	if (action == "C") {
 		const obj = JSON.parse(await dbConnect.getDbContent());
 		const dbLength = Object.keys(obj).length;
-		data.id = String(dbLength + 1);
-		obj[dbLength] = data;
+		let id = String(dbLength + 1);
+		obj[id] = data;
+		console.log(obj)
 		dbConnect.setDbContent(JSON.stringify(obj));
 	}
 	if (action == "U") {

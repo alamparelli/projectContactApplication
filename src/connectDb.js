@@ -6,7 +6,7 @@ const DB = process.env.LOCAL_JSONFILE;
 export function dbExist() {
 	if (!existsSync(DB)) {
 		//test if localfile exist
-		writeFile(DB, "", "utf-8", (res, err) => {
+		writeFile(DB, "{}", "utf-8", (res, err) => {
 			//create the empty db local file
 			if (err) {
 				console.error(`env variable LOCAL_JSONFILE do not exist!`);
