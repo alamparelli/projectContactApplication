@@ -18,11 +18,11 @@ export async function getAllContacts() {
 export async function updateContact(data, action, id = "") {
 	if (action == "C") {
 		const obj = JSON.parse(await dbConnect.getDbContent());
-		const lastId = Object.keys(data)[-1]
-		console.log(lastId)
-		//id = dbLength + 1;
-		//obj[id] = data;
-		//dbConnect.setDbContent(JSON.stringify(obj));
+		const tempObj = obj
+		const lastId = Object.keys(tempObj).pop();
+		let id = Number(lastId) + 1;
+		obj[id] = data;
+		dbConnect.setDbContent(JSON.stringify(obj));
 	}
 	if (action == "U") {
 		const obj = JSON.parse(await dbConnect.getDbContent());
