@@ -29,6 +29,8 @@
 .com.apple.metadata*
 
 #other files
-nodes_modules
+nodes_modules/
 localCarnetDatabaseFile.json
 contactBD.json
+eslint.config.js
+.prettierrc.json

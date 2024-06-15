@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/alamparelli/projectContactApplication#readme",
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "eslint": "^9.5.0"
   },
   "type": "module"
 }
